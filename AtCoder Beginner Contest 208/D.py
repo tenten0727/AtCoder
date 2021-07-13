@@ -25,46 +25,58 @@ MOD = 10 ** 9 + 7
 num_list = []
 str_list = []
 
+# ワーシャル・フロイド法（全点対間最短経路問題）
 def main():
     n, m = i_map()
 
-    graph = [[0]*n for _ in range(n)]
+    dist = [[INF]*n for _ in range(n)]
+    for i in range(n):
+        dist[i][i] = 0
+
     for _ in range(m):
         u, v, w = i_map()
-        graph[u-1][v-1] = w
+        dist[u-1][v-1] = w
     ans = 0
-    
-    for s in range(n):
-        for t in range(n):
-            for k in range(n):
-                if s == t:
-                    break
-                used = [False for _ in range(n)]
-                dist = [INF for _ in range(n)]
-                dist[s] = 0
-                X = set(range(k))
-                X.add(s)
-                X.add(t)
-                for i in X:
-                    min_dist = INF
-                    min_v = -1
 
-                    for j in X:
-                        if not used[j] and dist[j] < min_dist:
-                            min_dist = dist[j]
-                            min_v = j
+    for k in range(n):
+        for i in range(n):
+            for j in range(n):
+                dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])
+                if dist[i][j] != INF: ans += dist[i][j]
+
+    # for s in range(n):
+    #     for t in range(n):
+    #         for k in range(n):
+    #             if s == t:
+    #                 break
+    #             used = [False for _ in range(n)]
+    #             dist = [INF for _ in range(n)]
+    #             dist[s] = 0
+    #             X = set(range(k))
+    #             X.add(s)
+    #             X.add(t)
+    #             for i in X:
+    #                 min_dist = INF
+    #                 min_v = -1
+
+    #                 for j in X:
+    #                     if not used[j] and dist[j] < min_dist:
+    #                         min_dist = dist[j]
+    #                         min_v = j
                     
-                    if min_v == -1:
-                        break
+    #                 if min_v == -1:
+    #                     break
                     
-                    for v, w in enumerate(graph[min_v]):
-                        dist[v] = min(dist[v], dist[min_v]+w)
+    #                 for v, w in enumerate(graph[min_v]):
+    #                     dist[v] = min(dist[v], dist[min_v]+w)
                     
-                    used[min_v] = True
+    #                 used[min_v] = True
                 
-                if dist[t] != INF:
-                    print(dist[t])
-                    ans += dist[t]
+    #             if dist[t] != INF:
+    #                 print(dist[t])
+    #                 ans += dist[t]
+
+
     
     print(ans)
 
