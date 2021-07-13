@@ -43,7 +43,7 @@ def main():
     graph = [[] for _ in range(n)]
     for _ in range(m):
         a, b = i_map()
-        graph[a-1].append(b)
+        graph[a-1].append(b-1)
     
     for a in range(n):
         seen = [False for _ in range(n)]
