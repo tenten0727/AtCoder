@@ -37,7 +37,7 @@ def dfs(a, graph, seen):
             continue
         dfs(i, graph, seen)
 
-
+# グラフ（隣接リスト）
 def main():
     n, m = i_map()
     graph = [[] for _ in range(n)]
