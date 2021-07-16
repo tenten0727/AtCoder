@@ -54,6 +54,7 @@ def calc(A, i, n):
         
     return ans
 
+# bit全探索
 def main():
     n = i_input()
     A = i_list()
