@@ -25,29 +25,35 @@ MOD = 10 ** 9 + 7
 num_list = []
 str_list = []
 
+# 絶対値を外すことを考える（その際反転させればすべてのパターンを考えられることに注意）
+# 場所ごとの計算に変換することができる
+# dpを使って値を保存しておけば最小値がすぐに求められる
 def main():
-	n = i_input()
-	s = list(s_input())
-	q = i_input()
-	tab = i_row_list(q)
-	flag = False
+    h, w, c = i_map()
+    A = i_row_list(h)
+    
+    ans = INF
+    for _ in range(2):
+        dp = [[INF] * w for _ in range(h)]
+        for i in range(h):
+            for j in range(w):
+                dp[i][j] = A[i][j] - c * (i + j)
+        
+        for i in range(h):
+            for j in range(w):
+                if i != 0: dp[i][j] = min(dp[i][j], dp[i-1][j])
+                if j != 0: dp[i][j] = min(dp[i][j], dp[i][j-1])
+        
+        for i in range(h):
+            for j in range(w):
+                tmp = INF
+                if i != 0: tmp = min(tmp, dp[i-1][j])
+                if j != 0: tmp = min(tmp, dp[i][j-1])
+                ans = min(ans, A[i][j] + c * (i + j) + tmp)
+                
+        A = [list(reversed(a)) for a in A]
 
-	for i in range(q):
-		if tab[i][0] == 1:
-			if flag:
-				a = n if tab[i][1] - 1 < n else -n
-				b = n if tab[i][2] - 1 < n else -n
-				s[tab[i][1] - 1 + a], s[tab[i][2] - 1 + b] = s[tab[i][2] - 1 + b], s[tab[i][1] - 1 + a]
-
-			else:
-				s[tab[i][1] - 1], s[tab[i][2] - 1] = s[tab[i][2] - 1], s[tab[i][1] - 1]
-		else:
-			flag = not flag
-
-	if flag:
-		s = s[n:] + s[:n]
-
-	print("".join(s))
+    print(ans)
 
 if __name__ == '__main__':
-	main()
+    main()

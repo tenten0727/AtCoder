@@ -25,29 +25,41 @@ MOD = 10 ** 9 + 7
 num_list = []
 str_list = []
 
+def bfs(r, c, sx, sy, gx, gy, maze):
+    d = [[float("inf")] * c for i in range(r)]
+    dx = [1, 0, -1, 0]
+    dy = [0, 1, 0, -1]
+    
+    que = deque([])
+    que.append((sx, sy))
+    d[sy][sx] = 0
+    
+    while que:
+        p = que.popleft()
+        if p[0] == gx and p[1] == gy:
+            break
+        for i in range(4):
+            nx = p[0] +dx[i]
+            ny = p[1] +dy[i]
+            
+            if 0 <= nx < c and 0 <= ny < r and maze[ny][nx] != '#' and d[ny][nx] == float("inf"):
+                que.append((nx, ny))
+                d[ny][nx] = d[p[1]][p[0]] + 1
+    
+    return d[gy][gx]
+    
 def main():
-	n = i_input()
-	s = list(s_input())
-	q = i_input()
-	tab = i_row_list(q)
-	flag = False
+    r, c = i_map()
+    sy, sx = i_map()
+    gy, gx = i_map()
+    sx -= 1
+    sy -= 1
+    gx -= 1
+    gy -= 1
+    maze = [list(input()) for i in range(r)]
 
-	for i in range(q):
-		if tab[i][0] == 1:
-			if flag:
-				a = n if tab[i][1] - 1 < n else -n
-				b = n if tab[i][2] - 1 < n else -n
-				s[tab[i][1] - 1 + a], s[tab[i][2] - 1 + b] = s[tab[i][2] - 1 + b], s[tab[i][1] - 1 + a]
+    print(bfs(r, c, sx, sy, gx, gy, maze))
 
-			else:
-				s[tab[i][1] - 1], s[tab[i][2] - 1] = s[tab[i][2] - 1], s[tab[i][1] - 1]
-		else:
-			flag = not flag
-
-	if flag:
-		s = s[n:] + s[:n]
-
-	print("".join(s))
-
+    
 if __name__ == '__main__':
-	main()
+    main()

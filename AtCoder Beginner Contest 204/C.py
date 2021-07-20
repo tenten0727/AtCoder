@@ -25,29 +25,31 @@ MOD = 10 ** 9 + 7
 num_list = []
 str_list = []
 
+count = 0
+
+def dfs(a, graph, seen):
+    global count
+    seen[a] = True
+    count += 1
+
+    for i in graph[a]:
+        if seen[i]:
+            continue
+        dfs(i, graph, seen)
+
+# グラフ（隣接リスト）
 def main():
-	n = i_input()
-	s = list(s_input())
-	q = i_input()
-	tab = i_row_list(q)
-	flag = False
+    n, m = i_map()
+    graph = [[] for _ in range(n)]
+    for _ in range(m):
+        a, b = i_map()
+        graph[a-1].append(b-1)
+    
+    for a in range(n):
+        seen = [False for _ in range(n)]
+        dfs(a, graph, seen)
 
-	for i in range(q):
-		if tab[i][0] == 1:
-			if flag:
-				a = n if tab[i][1] - 1 < n else -n
-				b = n if tab[i][2] - 1 < n else -n
-				s[tab[i][1] - 1 + a], s[tab[i][2] - 1 + b] = s[tab[i][2] - 1 + b], s[tab[i][1] - 1 + a]
-
-			else:
-				s[tab[i][1] - 1], s[tab[i][2] - 1] = s[tab[i][2] - 1], s[tab[i][1] - 1]
-		else:
-			flag = not flag
-
-	if flag:
-		s = s[n:] + s[:n]
-
-	print("".join(s))
+    print(count)
 
 if __name__ == '__main__':
-	main()
+    main()

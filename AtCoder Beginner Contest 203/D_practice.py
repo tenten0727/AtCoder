@@ -7,6 +7,7 @@ from itertools import accumulate, product, combinations, combinations_with_repla
 from bisect import bisect, bisect_left, bisect_right
 from functools import reduce
 from decimal import Decimal, getcontext
+from typing import AsyncContextManager
 def i_input(): return int(input())
 def i_map(): return map(int, input().split())
 def i_list(): return list(i_map())
@@ -26,28 +27,39 @@ num_list = []
 str_list = []
 
 def main():
-	n = i_input()
-	s = list(s_input())
-	q = i_input()
-	tab = i_row_list(q)
-	flag = False
+    # 累積和
+    print(list(accumulate([1, 2, 4, 5, 6, 0])))
+    
+    # 二次元累積和
+    n = 5
+    A = [[1 for _ in range(n)] for _ in range(n)]
+    A_sum = [[0 for _ in range(n+1)] for _ in range(n+1)]
 
-	for i in range(q):
-		if tab[i][0] == 1:
-			if flag:
-				a = n if tab[i][1] - 1 < n else -n
-				b = n if tab[i][2] - 1 < n else -n
-				s[tab[i][1] - 1 + a], s[tab[i][2] - 1 + b] = s[tab[i][2] - 1 + b], s[tab[i][1] - 1 + a]
+    #方法１
+    for i in range(n):
+        for j in range(n):
+            A_sum[i+1][j+1] = A[i][j] + A_sum[i+1][j] + A_sum[i][j+1] - A_sum[i][j]
+    
+    print('[')
+    for r in A_sum:
+        print(r)
+    print(']')
 
-			else:
-				s[tab[i][1] - 1], s[tab[i][2] - 1] = s[tab[i][2] - 1], s[tab[i][1] - 1]
-		else:
-			flag = not flag
-
-	if flag:
-		s = s[n:] + s[:n]
-
-	print("".join(s))
+    #方法２
+    for i in range(n):
+        for j in range(n):
+            if j != 0:
+                A[i][j] += A[i][j-1]
+    for i in range(n):
+        for j in range(n):
+            if i != 0:
+                A[i][j] += A[i-1][j]
+    
+    print('[')
+    for r in A:
+        print(r)
+    print(']')
+    
 
 if __name__ == '__main__':
-	main()
+    main()

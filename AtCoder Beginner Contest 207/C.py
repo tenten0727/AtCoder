@@ -26,28 +26,19 @@ num_list = []
 str_list = []
 
 def main():
-	n = i_input()
-	s = list(s_input())
-	q = i_input()
-	tab = i_row_list(q)
-	flag = False
+    n = i_input()
+    tlr = i_row_list(n)
+    
+    kukan = [[0, 0], [0, -0.1], [0.1, 0], [0.1, -0.1]]
+    LR = [(l+kukan[t-1][0], r+kukan[t-1][1]) for t, l, r in tlr]
+    LR.sort()
+    ans = 0
+    
+    for A, B in combinations(LR, 2):
+        if(A[0] <= B[0] <= A[1]):
+            ans += 1
 
-	for i in range(q):
-		if tab[i][0] == 1:
-			if flag:
-				a = n if tab[i][1] - 1 < n else -n
-				b = n if tab[i][2] - 1 < n else -n
-				s[tab[i][1] - 1 + a], s[tab[i][2] - 1 + b] = s[tab[i][2] - 1 + b], s[tab[i][1] - 1 + a]
-
-			else:
-				s[tab[i][1] - 1], s[tab[i][2] - 1] = s[tab[i][2] - 1], s[tab[i][1] - 1]
-		else:
-			flag = not flag
-
-	if flag:
-		s = s[n:] + s[:n]
-
-	print("".join(s))
+    print(ans)
 
 if __name__ == '__main__':
-	main()
+    main()

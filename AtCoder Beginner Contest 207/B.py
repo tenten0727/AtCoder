@@ -26,28 +26,20 @@ num_list = []
 str_list = []
 
 def main():
-	n = i_input()
-	s = list(s_input())
-	q = i_input()
-	tab = i_row_list(q)
-	flag = False
+    a, b, c, d = i_map()
+    if (c * d - b == 0):
+        if a == 0:
+            print(0)
+        else:
+            print(-1)
+        exit()
 
-	for i in range(q):
-		if tab[i][0] == 1:
-			if flag:
-				a = n if tab[i][1] - 1 < n else -n
-				b = n if tab[i][2] - 1 < n else -n
-				s[tab[i][1] - 1 + a], s[tab[i][2] - 1 + b] = s[tab[i][2] - 1 + b], s[tab[i][1] - 1 + a]
-
-			else:
-				s[tab[i][1] - 1], s[tab[i][2] - 1] = s[tab[i][2] - 1], s[tab[i][1] - 1]
-		else:
-			flag = not flag
-
-	if flag:
-		s = s[n:] + s[:n]
-
-	print("".join(s))
+    ans = ceil(a / (c * d - b))
+    if ans > 0:
+        print(ans)
+    else:
+        print(-1)
+    
 
 if __name__ == '__main__':
-	main()
+    main()
