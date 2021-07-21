@@ -26,28 +26,15 @@ num_list = []
 str_list = []
 
 def main():
-	n = i_input()
-	s = list(s_input())
-	q = i_input()
-	tab = i_row_list(q)
-	flag = False
-
-	for i in range(q):
-		if tab[i][0] == 1:
-			if flag:
-				a = n if tab[i][1] - 1 < n else -n
-				b = n if tab[i][2] - 1 < n else -n
-				s[tab[i][1] - 1 + a], s[tab[i][2] - 1 + b] = s[tab[i][2] - 1 + b], s[tab[i][1] - 1 + a]
-
-			else:
-				s[tab[i][1] - 1], s[tab[i][2] - 1] = s[tab[i][2] - 1], s[tab[i][1] - 1]
+	A = i_list()
+	ans = A[1] * 2 - (A[0] + A[2])
+	if ans >= 0:
+		print(ans)
+	else:
+		if ans % 2 == 0:
+			print(-ans // 2)
 		else:
-			flag = not flag
-
-	if flag:
-		s = s[n:] + s[:n]
-
-	print("".join(s))
+			print(-ans // 2 + 2)	
 
 if __name__ == '__main__':
 	main()

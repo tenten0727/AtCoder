@@ -25,29 +25,36 @@ MOD = 10 ** 9 + 7
 num_list = []
 str_list = []
 
+# 深さ優先探索（pypyよりpythonのほうがよい）
+# 根付き木にすることを思いつけばできる。
+# 連結でn-1本の辺を持つ→木
+def dfs(i, graph, dist, depth):
+    depth += 1
+    for j in graph[i]:
+        if dist[j] == -1:
+            dist[j] = depth
+            dfs(j, graph, dist, depth)
+
 def main():
-	n = i_input()
-	s = list(s_input())
-	q = i_input()
-	tab = i_row_list(q)
-	flag = False
+    n, q = i_map()
+    graph = [[] for _ in range(n)]
 
-	for i in range(q):
-		if tab[i][0] == 1:
-			if flag:
-				a = n if tab[i][1] - 1 < n else -n
-				b = n if tab[i][2] - 1 < n else -n
-				s[tab[i][1] - 1 + a], s[tab[i][2] - 1 + b] = s[tab[i][2] - 1 + b], s[tab[i][1] - 1 + a]
+    for _ in range(n-1):
+        a, b = i_map()
+        graph[a-1].append(b-1)
+        graph[b-1].append(a-1)
 
-			else:
-				s[tab[i][1] - 1], s[tab[i][2] - 1] = s[tab[i][2] - 1], s[tab[i][1] - 1]
-		else:
-			flag = not flag
+    query = i_row_list(q)
+    dist = [-1]*n
+    dist[0] = 0
 
-	if flag:
-		s = s[n:] + s[:n]
+    dfs(0, graph, dist, 0)
 
-	print("".join(s))
+    for a, b in query:
+        if (dist[a-1] + dist[b-1]) % 2 == 0:
+            print('Town')
+        else:
+            print('Road')
 
 if __name__ == '__main__':
-	main()
+    main()

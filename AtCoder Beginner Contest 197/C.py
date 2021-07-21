@@ -1,5 +1,5 @@
 import sys, re
-from math import ceil, floor, sqrt, pi, factorial, gcd
+from math import ceil, floor, log2, sqrt, pi, factorial, gcd
 from copy import deepcopy
 from collections import Counter, deque
 from heapq import heapify, heappop, heappush
@@ -22,32 +22,54 @@ def lcm(a, b): return a * b // gcd(a, b)
 sys.setrecursionlimit(10 ** 6)
 INF = float('inf')
 MOD = 10 ** 9 + 7
-num_list = []
-str_list = []
 
+def calc(A, i, n):
+    bit = 1
+    tmp_list = [A[0]]
+    ans = 0
+    for j in range(1, n):
+        tmp_ans = 0
+        #分けるとき
+        if bit & i:
+            for a in tmp_list:
+                tmp_ans |= a
+            tmp_list=[]
+        
+
+        if ans != 0:
+            ans ^= tmp_ans
+        else:
+            ans = tmp_ans
+        
+        bit = bit << 1
+        tmp_list.append(A[j])
+    tmp_ans = 0
+    for a in tmp_list:
+        tmp_ans |= a
+    
+    if ans != 0:
+        ans ^= tmp_ans
+    else:
+        ans = tmp_ans
+        
+    return ans
+
+# bit全探索
 def main():
-	n = i_input()
-	s = list(s_input())
-	q = i_input()
-	tab = i_row_list(q)
-	flag = False
+    n = i_input()
+    A = i_list()
+    
+    result = INF
+    
+    if n == 1:
+        print(A[0])
+        exit()
+    
+    for i in range(2**(n-1)):
+        result = min(calc(A, i, n), result)
+        # print(calc(A, i, n))
 
-	for i in range(q):
-		if tab[i][0] == 1:
-			if flag:
-				a = n if tab[i][1] - 1 < n else -n
-				b = n if tab[i][2] - 1 < n else -n
-				s[tab[i][1] - 1 + a], s[tab[i][2] - 1 + b] = s[tab[i][2] - 1 + b], s[tab[i][1] - 1 + a]
-
-			else:
-				s[tab[i][1] - 1], s[tab[i][2] - 1] = s[tab[i][2] - 1], s[tab[i][1] - 1]
-		else:
-			flag = not flag
-
-	if flag:
-		s = s[n:] + s[:n]
-
-	print("".join(s))
+    print(result)
 
 if __name__ == '__main__':
-	main()
+    main()

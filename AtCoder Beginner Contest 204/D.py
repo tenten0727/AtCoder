@@ -25,25 +25,39 @@ MOD = 10 ** 9 + 7
 num_list = []
 str_list = []
 
-ans = INF
-memo = []
-
 # 全探索だとTLE　→　動的計画法
 
-def dfs(n, T, t1, t2):
-	global ans
-	if n == 0:
-		ans = min(ans, max(t1, t2))
-	else:
-		dfs(n-1, T, t1+T[n-1], t2)
-		dfs(n-1, T, t1, t2+T[n-1])
+# def dfs(n, T, t1, t2):
+# 	global ans
+# 	if n == 0:
+# 		ans = min(ans, max(t1, t2))
+# 	else:
+# 		dfs(n-1, T, t1+T[n-1], t2)
+# 		dfs(n-1, T, t1, t2+T[n-1])
+
+# def main():
+# 	n = i_input()
+# 	T = i_list()
+	
+# 	dfs(n, T, 0, 0)
+
+# 	print(ans)
 
 def main():
 	n = i_input()
 	T = i_list()
-	
-	dfs(n, T, 0, 0)
+	tot = sum(T)
+	dp = [[INF] * (tot*2+1) for _ in range(n+1)]
+	dp[0][0] = 0
+	for i in range(n):
+		for t in range(tot):
+			if (dp[i][t] != INF):
+				dp[i+1][t+T[i]] = min(dp[i+1][t+T[i]], dp[i][t])
+				dp[i+1][t] = min(dp[i+1][t], dp[i][t]+T[i])
 
+	ans = INF
+	for t in range(tot):
+		ans = min(ans, max(t, dp[n][t]))
 	print(ans)
 
 if __name__ == '__main__':

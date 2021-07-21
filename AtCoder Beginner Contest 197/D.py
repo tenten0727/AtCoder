@@ -1,5 +1,5 @@
 import sys, re
-from math import ceil, floor, sqrt, pi, factorial, gcd
+from math import atan2, ceil, cos, degrees, floor, radians, sin, sqrt, pi, factorial, gcd
 from copy import deepcopy
 from collections import Counter, deque
 from heapq import heapify, heappop, heappush
@@ -26,28 +26,22 @@ num_list = []
 str_list = []
 
 def main():
-	n = i_input()
-	s = list(s_input())
-	q = i_input()
-	tab = i_row_list(q)
-	flag = False
+    n = i_input()
+    p0 = i_list()
+    p2 = i_list()
+    
+    mid = [(p0[0] + p2[0]) / 2, (p0[1] + p2[1]) / 2]
+    
+    r = sqrt((p0[0] - mid[0]) ** 2 + (p0[1] - mid[1]) ** 2)
+    
+    rotate = atan2(p0[1] - mid[1], p0[0] - mid[0])
+    
+    rad = radians(360/n)
+    ans = [r * cos(rad), r * sin(rad)]
+    
+    ans = [ans[0] * cos(rotate) - ans[1] * sin(rotate) + mid[0], ans[0] * sin(rotate) + ans[1] * cos(rotate) + mid[1]]
 
-	for i in range(q):
-		if tab[i][0] == 1:
-			if flag:
-				a = n if tab[i][1] - 1 < n else -n
-				b = n if tab[i][2] - 1 < n else -n
-				s[tab[i][1] - 1 + a], s[tab[i][2] - 1 + b] = s[tab[i][2] - 1 + b], s[tab[i][1] - 1 + a]
-
-			else:
-				s[tab[i][1] - 1], s[tab[i][2] - 1] = s[tab[i][2] - 1], s[tab[i][1] - 1]
-		else:
-			flag = not flag
-
-	if flag:
-		s = s[n:] + s[:n]
-
-	print("".join(s))
+    print(*ans)
 
 if __name__ == '__main__':
-	main()
+    main()
