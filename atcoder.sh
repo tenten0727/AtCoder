@@ -9,6 +9,8 @@ start_atcoder () {
     done
 }
 
+#if文の[]の空白注意！
+
 file=()
 if [ "$3" = "" ]; then
     file=("A" "B" "C" "D")
