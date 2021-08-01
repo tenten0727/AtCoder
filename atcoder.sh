@@ -20,7 +20,7 @@ fi
 
 if [ "$1" = "abc" ]; then
     start_atcoder "AtCoder Beginner Contest $2" ${file[@]}
-elif [ "$1" = "arc"]
+elif [ "$1" = "arc"]; then
     start_atcoder "AtCoder Regular Contest $2" ${file[@]}
 else
     echo '第一引数が間違ってるー'
